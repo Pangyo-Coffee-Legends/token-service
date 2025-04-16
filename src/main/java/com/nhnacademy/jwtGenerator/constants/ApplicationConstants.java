@@ -1,4 +1,4 @@
-package com.nhnacademy.jwtauth.constants;
+package com.nhnacademy.jwtGenerator.constants;
 
 public final class ApplicationConstants {
 

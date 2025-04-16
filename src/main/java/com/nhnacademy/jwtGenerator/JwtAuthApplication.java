@@ -1,4 +1,4 @@
-package com.nhnacademy.jwtauth;
+package com.nhnacademy.jwtGenerator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
