@@ -1,4 +1,4 @@
-package com.nhnacademy.jwtauth;
+package com.nhnacademy.jwtGenerator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
