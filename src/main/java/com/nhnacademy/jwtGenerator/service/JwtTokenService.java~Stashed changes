@@ -1,0 +1,44 @@
+package com.nhnacademy.jwtGenerator.service;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+@Service
+public class JwtTokenService {
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    public String createAccessToken(String email, String role) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.builder()
+                .issuer("판교스타벅스에서봅시다") // jwt 발급한 주체
+                .subject("AccessToken")
+                .claim("email", email)
+                .claim("role", role)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60)) // 1시간
+                .signWith(key)
+                .compact();
+    }
+
+    public String createRefreshToken(String email) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.builder()
+                .issuer("판교스타벅스에서봅시다")
+                .subject("RefreshToken")
+                .claim("email", email)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)) // 7일
+                .signWith(key)
+                .compact();
+    }
+}
