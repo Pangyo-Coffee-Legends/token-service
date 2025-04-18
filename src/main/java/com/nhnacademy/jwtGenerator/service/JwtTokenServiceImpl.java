@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
-public class JwtTokenService {
+public class JwtTokenServiceImpl {
 
     @Value("${jwt.secret}")
     private String secretKey;

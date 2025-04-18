@@ -1,31 +1,30 @@
 package com.nhnacademy.jwtGenerator.controller;
 
+import com.nhnacademy.jwtGenerator.dto.JwtResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import com.nhnacademy.jwtGenerator.dto.JwtIssueRequest;
-import com.nhnacademy.jwtGenerator.service.JwtTokenService;
+import com.nhnacademy.jwtGenerator.service.JwtTokenServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class JwtAuthController {
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenServiceImpl jwtTokenService;
 
-    @PostMapping("")
-    public ResponseEntity<?> issueToken(@RequestBody JwtIssueRequest request) {
+    @PostMapping("/auth")
+    public ResponseEntity<JwtResponse> issueToken(@RequestBody JwtIssueRequest request) {
         String accessToken = jwtTokenService.createAccessToken(request.getEmail(), request.getRole());
         String refreshToken = jwtTokenService.createRefreshToken(request.getEmail());
 
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("accessToken", accessToken);
-        tokenMap.put("refreshToken", refreshToken);
+        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
 
-        return ResponseEntity.ok(tokenMap);
+        return ResponseEntity.ok(jwtResponse);
     }
+
+
 }
 
