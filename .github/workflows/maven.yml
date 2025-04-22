@@ -57,6 +57,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script_stop: true
-        script: |
-            chmod +x ~/token/startup.sh  
-            cd ~/token && ./startup.sh
+        script: "cd ~/token && ./startup.sh"
