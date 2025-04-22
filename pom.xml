@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhnacademy</groupId>
-    <artifactId>JwtAuth</artifactId>
+    <artifactId>token-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>JwtAuth</name>
-    <description>JwtAuth</description>
+    <name>token-service</name>
+    <description>token-service</description>
     <url/>
     <licenses>
         <license/>
@@ -96,9 +96,14 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>token-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.cyclonedx</groupId>
@@ -107,6 +112,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        -Xshare:off
+                    </argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>
