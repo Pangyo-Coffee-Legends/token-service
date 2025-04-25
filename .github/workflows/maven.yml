@@ -30,7 +30,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       env:
-        JWT_KEY: ${{ secrets.JWT_KEY }}
+        JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+        JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
         REDIS_IP: ${{ secrets.REDIS_IP }}
         REDIS_KEY: ${{ secrets.REDIS_KEY }}
 
