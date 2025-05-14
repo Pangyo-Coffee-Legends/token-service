@@ -15,17 +15,17 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 @RequiredArgsConstructor
 public class RedisConfig {
-//    private final RedisProperties redisProperties;
+    private final RedisProperties redisProperties;
 
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory(){
-//        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-//        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
-//        redisStandaloneConfiguration.setPort(redisProperties.getPort());
-//        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
-//
-//        return new LettuceConnectionFactory(redisStandaloneConfiguration);
-//    }
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory(){
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+        redisStandaloneConfiguration.setPort(redisProperties.getPort());
+        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+    }
 
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {

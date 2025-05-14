@@ -46,7 +46,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         String newRefreshToken = provider.createRefreshToken(email);
         long newExpire = provider.getExpiration(newRefreshToken);
 
-//        redisDao.deleteToken(key);
+        redisDao.delete(key);
         redisDao.save(key, newRefreshToken, newExpire); // 덮어쓰기 TTL 갱신 가능
 
         return new JwtResponse(newAccessToken, newRefreshToken);
