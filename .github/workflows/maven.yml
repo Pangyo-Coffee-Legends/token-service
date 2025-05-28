@@ -46,7 +46,7 @@ jobs:
           mkdir -p ~/token/target
           rm -f  ~/token/target/*.jar
 
-    - name: upload file
+    - name: Upload file
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SSH_IP }}
@@ -58,17 +58,7 @@ jobs:
         strip_components: 1
         overwrite: true
 
-    - name: Create application.properties file
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_IP }}
-        username: ${{ secrets.SSH_ID }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          echo "${{ secrets.APPLICATION_PROPERTIES }}" > ~/token/application.properties
-
-    - name: execute shell script
+    - name: Execute shell script
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_IP }}
