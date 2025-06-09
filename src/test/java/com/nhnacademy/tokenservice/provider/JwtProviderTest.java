@@ -21,7 +21,7 @@ class JwtProviderTest {
     @Test
     @DisplayName("access token 발급")
     void createAccessToken() {
-        String token = provider.createAccessToken("test@test.com");
+        String token = provider.createAccessToken("test@test.com", "ROLE_USER");
 
         assertNotNull(token);
     }
@@ -37,7 +37,7 @@ class JwtProviderTest {
     @Test
     @DisplayName("claim 추출")
     void extractClaims() {
-        String token = provider.createAccessToken("test@test.com");
+        String token = provider.createAccessToken("test@test.com", "ROLE_USER");
 
         String email = (String) provider.extractClaims(token).get("email");
 
@@ -48,7 +48,7 @@ class JwtProviderTest {
     @Test
     @DisplayName("유효시간 추출")
     void getExpiration() {
-        String token = provider.createAccessToken("test@test.com");
+        String token = provider.createAccessToken("test@test.com", "ROLE_USER");
         long exp = provider.getExpiration(token);
 
         assertNotNull(exp);

@@ -1,6 +1,7 @@
 package com.nhnacademy.tokenservice.service.impl;
 
 import com.nhnacademy.tokenservice.dao.RedisDao;
+import com.nhnacademy.tokenservice.dto.JwtIssueRequest;
 import com.nhnacademy.tokenservice.dto.JwtResponse;
 import com.nhnacademy.tokenservice.provider.JwtProvider;
 import io.jsonwebtoken.Claims;
@@ -38,13 +39,14 @@ class JwtTokenServiceImplTest {
     @Test
     @DisplayName("token 발급")
     void issueToken() {
-        when(provider.createAccessToken(email)).thenReturn(accessToken);
+        JwtIssueRequest request = new JwtIssueRequest(email, "ROLE_USER");
+        when(provider.createAccessToken(email, "ROLE_USER")).thenReturn(accessToken);
         when(provider.createRefreshToken(email)).thenReturn(refreshToken);
         when(provider.getExpiration(refreshToken)).thenReturn(3600L);
 
-        JwtResponse response = jwtTokenService.issueToken(email);
+        JwtResponse response = jwtTokenService.issueToken(request);
 
-        verify(provider, Mockito.times(1)).createAccessToken(Mockito.anyString());
+        verify(provider, Mockito.times(1)).createAccessToken(Mockito.anyString(), Mockito.anyString());
         verify(provider, Mockito.times(1)).createRefreshToken(Mockito.anyString());
         verify(redisDao, Mockito.times(1)).save(REDIS_KEY_TOKEN_PREFIX + email, refreshToken, 3600L);
 
@@ -66,7 +68,7 @@ class JwtTokenServiceImplTest {
         when(redisDao.has(key)).thenReturn(true);
         when(redisDao.get(key)).thenReturn(refreshToken);
 
-        when(provider.createAccessToken(email)).thenReturn(newAccessToken);
+        when(provider.createAccessToken(email, "ROLE_USER")).thenReturn(newAccessToken);
         when(provider.createRefreshToken(email)).thenReturn(newRefreshToken);
         when(provider.getExpiration(newRefreshToken)).thenReturn(3600L);
 
@@ -74,7 +76,7 @@ class JwtTokenServiceImplTest {
 
         verify(redisDao, Mockito.times(1)).has(key);
         verify(redisDao, Mockito.times(1)).get(key);
-        verify(provider, Mockito.times(1)).createAccessToken(email);
+        verify(provider, Mockito.times(1)).createAccessToken(email, "ROLE_USER");
         verify(provider, Mockito.times(1)).createRefreshToken(email);
         verify(redisDao, Mockito.times(1)).save(key, newRefreshToken, 3600L);
 

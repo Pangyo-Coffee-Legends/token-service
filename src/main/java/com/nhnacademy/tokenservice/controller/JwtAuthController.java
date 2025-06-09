@@ -30,7 +30,7 @@ public class JwtAuthController {
      */
     @PostMapping
     public ResponseEntity<JwtResponse> issueToken(@RequestBody JwtIssueRequest request) {
-        JwtResponse jwtResponse = jwtTokenService.issueToken(request.getEmail());
+        JwtResponse jwtResponse = jwtTokenService.issueToken(request);
         return ResponseEntity.ok(jwtResponse);
     }
 

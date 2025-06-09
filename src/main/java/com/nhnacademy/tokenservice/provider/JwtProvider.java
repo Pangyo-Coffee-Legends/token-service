@@ -32,11 +32,14 @@ public class JwtProvider {
         this.publicKey = loadPublicKey(publicKeyPem);
     }
 
-    public String createAccessToken(String email) {
+    // RS256 쓴 '이유', 특징, 안전하게 처리하는지.. -> RSA방식 쓰고 있음
+    // 회원 번호로 하는 것도 생각...
+    public String createAccessToken(String email, String role) {
         return Jwts.builder()
                 .issuer("판교스타벅스에서봅시다")
                 .subject("AccessToken")
                 .claim("email", email)
+                .claim("roles", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(privateKey, SignatureAlgorithm.RS256)

@@ -1,5 +1,6 @@
 package com.nhnacademy.tokenservice.service;
 
+import com.nhnacademy.tokenservice.dto.JwtIssueRequest;
 import com.nhnacademy.tokenservice.dto.JwtResponse;
 
 /**
@@ -10,12 +11,12 @@ import com.nhnacademy.tokenservice.dto.JwtResponse;
  */
 public interface JwtTokenService {
     /**
-     * 사용자의 이메일을 기반으로 Access Token 및 Refresh Token을 발급합니다.
+     * 사용자의 정보를 기반으로 Access Token 및 Refresh Token을 발급합니다.
      *
-     * @param email 토큰을 발급할 사용자의 이메일
+     * @param request 토큰을 발급할 사용자의 정보
      * @return Access Token과 Refresh Token이 포함된 {@link JwtResponse}
      */
-    JwtResponse issueToken(String email);
+    JwtResponse issueToken(JwtIssueRequest request);
 
     /**
      * 전달받은 Refresh Token을 기반으로 새로운 Access Token과 Refresh Token을 재발급합니다.

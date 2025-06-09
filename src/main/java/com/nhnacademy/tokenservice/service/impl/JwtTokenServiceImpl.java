@@ -1,6 +1,7 @@
 package com.nhnacademy.tokenservice.service.impl;
 
 import com.nhnacademy.tokenservice.dao.RedisDao;
+import com.nhnacademy.tokenservice.dto.JwtIssueRequest;
 import com.nhnacademy.tokenservice.dto.JwtResponse;
 import com.nhnacademy.tokenservice.provider.JwtProvider;
 import com.nhnacademy.tokenservice.service.JwtTokenService;
@@ -18,18 +19,19 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
 
     @Override
-    public JwtResponse issueToken(String email){
-        String accessToken = provider.createAccessToken(email);
-        String refreshToken = provider.createRefreshToken(email);
+    public JwtResponse issueToken(JwtIssueRequest request){
+        String accessToken = provider.createAccessToken(request.getEmail(), request.getRole());
+        String refreshToken = provider.createRefreshToken(request.getEmail());
         long expire = provider.getExpiration(refreshToken);
 
-        redisDao.save(REDIS_KEY_TOKEN_PREFIX + email, refreshToken, expire);
+//        redisDao.save(REDIS_KEY_TOKEN_PREFIX + email, refreshToken, expire);
         return new JwtResponse(accessToken, refreshToken);
     }
 
     @Override
     public JwtResponse reissueToken(String refreshToken) {
         String email = (String) provider.extractClaims(refreshToken).get("email");
+        String role = (String) provider.extractClaims(refreshToken).get("roles");
         String key = REDIS_KEY_TOKEN_PREFIX + email;
 
         String storedRefreshToken = redisDao.get(key);
@@ -42,7 +44,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             throw new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다");
         }
 
-        String newAccessToken = provider.createAccessToken(email);
+        String newAccessToken = provider.createAccessToken(email, role);
         String newRefreshToken = provider.createRefreshToken(email);
         long newExpire = provider.getExpiration(newRefreshToken);
 
